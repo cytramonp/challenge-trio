@@ -7,7 +7,7 @@ export async function requestProgress(options={}, {urls=endpoints,fetcher=fetch,
   try {
    const response=await fetcher(url,{...options,cache:'no-store',signal:controller.signal});
    const data=await response.json();
-   if(response.status>=400&&response.status<500) {
+   if(options.method==='POST'&&[400,409,422].includes(response.status)) {
     const error=new Error(data.error||'Проверьте введённые данные.');
     error.validation=true;throw error;
    }
