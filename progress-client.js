@@ -1,6 +1,6 @@
-const endpoints=['https://challenge-trio-api-production.up.railway.app/api/progress','https://challenge-trio.vercel.app/api/progress'];
+const endpoints=['https://challenge-trio-api.netlify.app/api/progress','https://challenge-trio.vercel.app/api/progress'];
 
-export async function requestProgress(options={}, {urls=endpoints,fetcher=fetch,timeout=8000}={}) {
+export async function requestProgress(options={}, {urls=endpoints,fetcher=fetch,timeout=12000}={}) {
  for(const url of [...new Set(urls)]) {
   const controller=new AbortController();
   const timer=setTimeout(()=>controller.abort(),timeout);

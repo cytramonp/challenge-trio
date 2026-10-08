@@ -1,4 +1,4 @@
-import {requestProgress} from './progress-client.js';
+import {requestProgress} from './progress-client.js?v=netlify-1';
 import {createLocalState} from './local-state.js';
 const people=[{id:'sergey',name:'Сергей',goal:'Снижение веса',start:90,target:80,unit:'кг',step:.1,min:40,max:200,color:'#c94437'},{id:'anton',name:'Антон',goal:'Подтягивания',start:8,target:20,unit:'раз',step:1,min:0,max:100,color:'#1671bb'},{id:'diman',name:'Диман',goal:'Жим лёжа',start:85,target:100,unit:'кг',step:2.5,min:0,max:300,color:'#a16b06'}];
 const START='2026-10-06',END='2026-12-06';
