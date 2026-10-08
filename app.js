@@ -1,4 +1,4 @@
-import {requestProgress} from './progress-client.js?v=netlify-1';
+import {requestProgress} from './progress-client.js?v=send-2';
 import {createLocalState} from './local-state.js';
 const people=[{id:'sergey',name:'Сергей',goal:'Снижение веса',start:90,target:80,unit:'кг',step:.1,min:40,max:200,color:'#c94437'},{id:'anton',name:'Антон',goal:'Подтягивания',start:8,target:20,unit:'раз',step:1,min:0,max:100,color:'#1671bb'},{id:'diman',name:'Диман',goal:'Жим лёжа',start:85,target:100,unit:'кг',step:2.5,min:0,max:300,color:'#a16b06'}];
 const START='2026-10-06',END='2026-12-06';
@@ -63,7 +63,7 @@ $('#entry-form').onsubmit=async event=>{
  event.preventDefault();if(saving)return;saving=true;revision++;$('#save').disabled=true;$('#save').textContent='Сохраняем…';$('#form-error').textContent='';
  const queued=local.enqueue({person:editing.id,date:$('#entry-date').value,value:Number($('#entry-value').value),comment:$('#entry-comment').value});renderPending();
  try{const data=await requestProgress({method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(queued.entry)});acceptEntry({...data.entry,requestId:queued.entry.requestId});selected=queued.entry.person;filter=selected;render();$('#entry-dialog').close();$('#sync').textContent='Результат сохранён на сервере';$('#sync').style.color='';toast('Сохранено. Результат доступен всем участникам.');}
- catch(e){if(e.validation){local.remove(queued.entry.requestId);renderPending();$('#form-error').textContent=e.message}else{$('#form-error').textContent=queued.durable?'Сервер не подтвердил сохранение. Запись сохранена на этом устройстве и будет отправлена при восстановлении связи. Пока другие участники её не видят.':'Нет связи и браузер не разрешает сохранить черновик. Не закрывайте форму, повторите отправку.';$('#sync').textContent='Ожидает отправки'}}
+ catch(e){if(e.validation){local.remove(queued.entry.requestId);renderPending();$('#form-error').textContent=e.message}else{$('#form-error').textContent=queued.durable?'Сервер не подтвердил сохранение. Запись сохранена на этом устройстве и будет отправлена при восстановлении связи. Пока другие участники её не видят.':'Нет связи и браузер не разрешает сохранить черновик. Не закрывайте форму, повторите отправку.';$('#form-error').textContent+=' '+(e.diagnostic||'S2 · '+e.message);$('#sync').textContent='Ожидает отправки'}}
  finally{saving=false;$('#save').disabled=false;$('#save').textContent='Сохранить результат';if(!$('#entry-dialog').open)load(true)}
 };
 async function sync(){await sendPending();await load(true)}
