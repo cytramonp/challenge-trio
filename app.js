@@ -55,7 +55,7 @@ function acceptEntry(entry){
 async function sendPending(){
  if(saving||!local.queue().length)return;
  saving=true;revision++;
- try{for(const payload of [...local.queue()]){const data=await requestProgress({method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});acceptEntry(data.entry)}$('#sync').textContent='Все записи отправлены';}
+ try{for(const payload of [...local.queue()]){const data=await requestProgress({method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});acceptEntry({...data.entry,requestId:payload.requestId});if($('#entry-dialog').open&&editing?.id===payload.person&&$('#entry-date').value===payload.date&&Number($('#entry-value').value)===payload.value&&$('#entry-comment').value===payload.comment){$('#form-error').textContent='';$('#entry-dialog').close();toast('Связь восстановлена. Запись сохранена на сервере.')}}$('#sync').textContent='Все записи отправлены';}
  catch{$('#sync').textContent='Есть записи, ожидающие отправки';}
  finally{saving=false;renderPending()}
 }
